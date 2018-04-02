@@ -1,0 +1,9 @@
+conturi:
+user -user
+user1 -user1
+
+TAGS
+1. CLIENT-SERVER (with proxy repository)
+2. Request/Response protocol implemented
+3. MySQL databases conection
+4. Multiple projects solution
