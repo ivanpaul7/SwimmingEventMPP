@@ -50,7 +50,7 @@ namespace networking {
         public GetAllPart4EventRequest(Event ev) {
             this.ev = ev;
         }
-        public  Event Event {
+        public virtual Event Event {
             get {
                 return ev;
             }
@@ -63,7 +63,7 @@ namespace networking {
         public AddParticipantRequest(Participant part) {
             this.part = part;
         }
-        public  Participant Participant {
+        public virtual Participant Participant {
             get {
                 return part;
             }
@@ -76,7 +76,7 @@ namespace networking {
         public AddPart2EventRequest(EventPartDTO ev) {
             this.ev = ev;
         }
-        public  EventPartDTO EventPartDTOent {
+        public virtual EventPartDTO EventPartDTOent {
             get {
                 return ev;
             }

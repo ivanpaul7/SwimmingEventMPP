@@ -15,7 +15,7 @@ namespace networking {
                 this.message = message;
             }
         
-            public  string Message {
+            public virtual string Message {
                     get {
                         return this.message;
                     }
@@ -33,7 +33,7 @@ namespace networking {
             this.events = events;
         }
 
-        public  EventPartDTO[] EventsNosPart {
+        public virtual EventPartDTO[] EventsNosPart {
             get {
                 return events;
             }
@@ -46,7 +46,7 @@ namespace networking {
         public GetAllPart4EventResponse(Participant[] parts) {
             this.parts = parts;
         }
-        public  Participant[] Participants {
+        public virtual Participant[] Participants {
             get {
                 return parts;
             }
@@ -59,7 +59,7 @@ namespace networking {
         public GetAllPartResponse(Participant[] parts) {
             this.parts = parts;
         }
-        public  Participant[] Participants {
+        public virtual Participant[] Participants {
             get {
                 return parts;
             }
@@ -79,7 +79,7 @@ namespace networking {
         public AddParticipantObsResponse(Participant part) {
             this.part = part;
         }
-        public  Participant Participant {
+        public virtual Participant Participant {
             get {
                 return part;
             }

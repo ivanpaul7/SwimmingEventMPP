@@ -10,6 +10,7 @@ namespace model {
         int id, age;
         String name;
 
+        public Participant() { }
         public Participant(int id, String name, int age) {
             this.id = id;
             this.Name = name;

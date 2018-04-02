@@ -59,7 +59,6 @@ namespace networking {
         }
 
         public virtual EventPartDTO[] findEventsNosParticipants() {
-            initializeConnection();
             sendRequest(new GetEventsNosPartRequest());
             Response response = readResponse();
             if (response is ErrorResponse) {
@@ -72,7 +71,6 @@ namespace networking {
         }
 
         public virtual Participant[] findAllParticipants() {
-            initializeConnection();
             sendRequest(new GetAllPartRequest());
             Response response = readResponse();
             if (response is ErrorResponse) {
@@ -84,7 +82,6 @@ namespace networking {
         }
 
         public virtual Participant[] findPartForEvent(Event e) {
-            initializeConnection();
             sendRequest(new GetAllPart4EventRequest(e));
             Response response = readResponse();
             if (response is ErrorResponse) {
@@ -96,7 +93,6 @@ namespace networking {
         }
 
         public virtual void addParticipant(Participant participant) {
-            initializeConnection();
             sendRequest(new AddParticipantRequest(participant));
             Response response = readResponse();
             if (response is ErrorResponse) {
@@ -106,7 +102,6 @@ namespace networking {
         }
 
         public virtual void addPart2Event(EventPartDTO e) {
-            initializeConnection();
             sendRequest(new AddPart2EventRequest(e));
             Response response = readResponse();
             if (response is ErrorResponse) {
@@ -126,7 +121,6 @@ namespace networking {
             } catch (Exception e) {
                 Console.WriteLine(e.StackTrace);
             }
-
         }
         private void sendRequest(Request request) {
             try {
@@ -137,7 +131,6 @@ namespace networking {
             }
 
         }
-
         private Response readResponse() {
             Response response = null;
             try {
@@ -174,12 +167,16 @@ namespace networking {
             while (!finished) {
                 try {
                     object response = formatter.Deserialize(stream);
-                    Console.WriteLine("response received" + response);
+                    Console.WriteLine("response received " + response);
                     if (response is UpdateResponse) {
                         handleUpdate((UpdateResponse)response);
                     } else {
+
                         lock (responses) {
+
+
                             responses.Enqueue((Response)response);
+
                         }
                         _waitHandle.Set();
                     }
@@ -189,6 +186,8 @@ namespace networking {
 
             }
         }
+
+
         private void handleUpdate(UpdateResponse update) {
             if (update is UpdateNowResponse) {
                 try {
