@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace services {
     public interface ISwimObserver {
-        void UpdateObserver();
+        void AddEventPartObserver(EventPartDTO ev);
         void AddParticipantObserver(Participant part);
     }
 }

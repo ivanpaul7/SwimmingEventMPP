@@ -189,9 +189,10 @@ namespace networking {
 
 
         private void handleUpdate(UpdateResponse update) {
-            if (update is UpdateNowResponse) {
+            if (update is AddEventPartObsResponse) {
+                AddEventPartObsResponse addRes = (AddEventPartObsResponse)update;
                 try {
-                    client.UpdateObserver();
+                    client.AddEventPartObserver(addRes.EventPartDTO);
                 } catch (SwimException e) {
                     Console.WriteLine(e.StackTrace);
                 }

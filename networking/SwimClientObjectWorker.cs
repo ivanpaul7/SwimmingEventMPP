@@ -151,28 +151,35 @@ namespace networking {
             return response;
         }
 
+        //private void sendResponse(Response response) {
+        //    Console.WriteLine("sending response " + response);
+        //    formatter.Serialize(stream, response);
+        //    stream.Flush();
+        //}
+
         private void sendResponse(Response response) {
-            Console.WriteLine("sending response " + response);
-            formatter.Serialize(stream, response);
-            stream.Flush();
-
-        }
-
-        public virtual void UpdateObserver() {
-            Console.WriteLine("Updating all clients...");
-            Console.WriteLine("1111111111111111111...");
-            try {
-                sendResponse(new UpdateNowResponse());
-                Console.WriteLine("222222222222222222...");
-            } catch (Exception e) {
-                Console.WriteLine(e.StackTrace);
+            lock (stream) {
+                Console.WriteLine("sending response " + response);
+                formatter.Serialize(stream, response);
+                stream.Flush();
             }
+
         }
+
 
         public virtual void AddParticipantObserver(Participant part) {
             Console.WriteLine("Participant received  " + part.Name);
             try {
                 sendResponse(new AddParticipantObsResponse(part));
+            } catch (Exception e) {
+                throw new SwimException("Sending error: " + e);
+            }
+        }
+
+        public void AddEventPartObserver(EventPartDTO ev) {
+            Console.WriteLine("EventPartDTO received  " + ev.Distance +" "+ev.Style);
+            try {
+                sendResponse(new AddEventPartObsResponse(ev));
             } catch (Exception e) {
                 throw new SwimException("Sending error: " + e);
             }

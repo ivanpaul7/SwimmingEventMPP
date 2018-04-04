@@ -33,12 +33,11 @@ namespace Server {
 
         public void addPart2Event(EventPartDTO e) {
             eventPartRepo.save(e);
-            notifyAllObservers();
+            notifyObserverAddEventPart(e);
         }
 
         public void addParticipant(Participant participant) {
             partRepo.save(participant);
-            //notifyAllObservers();
             notifyObserverAddPart(participant);
         }
 
@@ -60,9 +59,9 @@ namespace Server {
             return result.ToArray();
         }
 
-        private void notifyAllObservers() {
+        private void notifyObserverAddEventPart(EventPartDTO ev) {
             foreach (ISwimObserver obs in loggedClients.Values) {
-                Task.Run(() => obs.UpdateObserver());
+                Task.Run(() => obs.AddEventPartObserver(ev));
             }
         }
         private void notifyObserverAddPart(Participant part) {

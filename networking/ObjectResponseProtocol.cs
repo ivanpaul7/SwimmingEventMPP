@@ -71,9 +71,6 @@ namespace networking {
     //pentru observer
     public interface UpdateResponse : Response { }
     [Serializable]
-    public class UpdateNowResponse : UpdateResponse {
-    }
-    [Serializable]
     public class AddParticipantObsResponse : UpdateResponse {
         private Participant part;
         public AddParticipantObsResponse(Participant part) {
@@ -82,6 +79,18 @@ namespace networking {
         public virtual Participant Participant {
             get {
                 return part;
+            }
+        }
+    }
+    [Serializable]
+    public class AddEventPartObsResponse : UpdateResponse {
+        private EventPartDTO eventPart;
+        public AddEventPartObsResponse(EventPartDTO ep) {
+            this.eventPart = ep;
+        }
+        public virtual EventPartDTO EventPartDTO {
+            get {
+                return eventPart;
             }
         }
     }

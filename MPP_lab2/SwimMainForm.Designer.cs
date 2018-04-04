@@ -50,7 +50,7 @@
             this.dataGvEvent.Location = new System.Drawing.Point(12, 12);
             this.dataGvEvent.Name = "dataGvEvent";
             this.dataGvEvent.RowTemplate.Height = 24;
-            this.dataGvEvent.Size = new System.Drawing.Size(394, 487);
+            this.dataGvEvent.Size = new System.Drawing.Size(430, 487);
             this.dataGvEvent.TabIndex = 0;
             this.dataGvEvent.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGvEvent_CellContentClick);
             this.dataGvEvent.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGvEvent_CellContentClick);
@@ -58,7 +58,7 @@
             // dataGvParticipant
             // 
             this.dataGvParticipant.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGvParticipant.Location = new System.Drawing.Point(424, 12);
+            this.dataGvParticipant.Location = new System.Drawing.Point(448, 12);
             this.dataGvParticipant.Name = "dataGvParticipant";
             this.dataGvParticipant.RowTemplate.Height = 24;
             this.dataGvParticipant.Size = new System.Drawing.Size(411, 487);

@@ -43,14 +43,18 @@
   <ItemGroup>
     <Compile Include="DbUtils.cs" />
     <Compile Include="EventDbRepository.cs" />
+    <Compile Include="MockFiles\EventMockRepository.cs" />
     <Compile Include="ICrudRepository.cs" />
     <Compile Include="IEventRepository.cs" />
     <Compile Include="IOrganizerRepository.cs" />
     <Compile Include="IParticipantEventRepository.cs" />
     <Compile Include="IParticipantRepository.cs" />
+    <Compile Include="MockFiles\ParticipantEventMockRepository.cs" />
+    <Compile Include="MockFiles\OrganizerMockRepository.cs" />
     <Compile Include="OrganizerDbRepository.cs" />
     <Compile Include="ParticipantDbRepository.cs" />
     <Compile Include="ParticipantEventDbRepository.cs" />
+    <Compile Include="MockFiles\ParticipantMockRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

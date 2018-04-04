@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace client {
     public enum SwimUserEvent {
-        Update, AddParticipant
+        AddEventPart, AddParticipant
     };
     public class SwimUserEventArgs : EventArgs {
         private readonly SwimUserEvent userEvent;

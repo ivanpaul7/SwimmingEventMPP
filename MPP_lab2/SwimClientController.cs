@@ -10,7 +10,6 @@ using services;
 namespace client {
     public class SwimClientController: ISwimObserver {
         bool currrent = false;
-        private SwimMainForm swimMainForm;
         //private SwimMainForm.UpdateObserverDelegate del;
         public event EventHandler<SwimUserEventArgs> updateEvent; //ctrl calls it when it has received an update
         private readonly ISwimServer server;
@@ -19,23 +18,14 @@ namespace client {
         public SwimClientController(ISwimServer server) {
             this.server = server;
         }
-
-        public BindingSource findAllEvent() {
-            BindingSource bindingSourceEvent = new BindingSource();
-            foreach (EventPartDTO t in server.findEventsNosParticipants())
-                bindingSourceEvent.Add(t);
-            return bindingSourceEvent;
+        public IList<EventPartDTO> findAllEvents() {
+            IList<EventPartDTO> all = new List<EventPartDTO>();
+            EventPartDTO[] events = server.findEventsNosParticipants();
+            foreach (var p in events) {
+                all.Add(p);
+            }
+            return all;
         }
-
-        public void setFormForObserver(SwimMainForm swimMainForm) {
-            this.swimMainForm = swimMainForm;
-        }
-
-        //internal void setFormForObserver(SwimMainForm.UpdateObserverDelegate del) {
-        //    this.del = del;
-        //}
-
-     
 
         public void login(string username, string pass) {
             Organizer user = new Organizer(username, pass);
@@ -76,39 +66,26 @@ namespace client {
         }
 
         public void addParticipant(Participant participant) {
-            currrent = true;
             server.addParticipant(participant);
-           
-            //SwimUserEventArgs userArgs = new SwimUserEventArgs(SwimUserEvent.Update, findAllPart());
-            //OnUserEvent(userArgs);
-            currrent = false;
         }
 
         public void addPart2Event(EventPartDTO e) {
             server.addPart2Event(e);
         }
 
-        public void UpdateObserver() {
-            if (!currrent) {
-                Console.WriteLine("Updating Client...");
-                //TODO 
-                //swimMainForm.Invoke(swimMainForm.myDelegate);
-                SwimUserEventArgs userArgs = new SwimUserEventArgs(SwimUserEvent.Update, findAllPart());
-                OnUserEvent(userArgs);
-            }
-        }
-
         protected virtual void OnUserEvent(SwimUserEventArgs e) {
-            //if (!currrent) {
-                if (updateEvent == null) return;
-                updateEvent(this, e);
-                Console.WriteLine("Update Event called");
-                currrent = false;
-            //}
+            if (updateEvent == null) return;
+            updateEvent(this, e);
+            Console.WriteLine("Update Event called");
        }
 
         public void AddParticipantObserver(Participant part) {
             SwimUserEventArgs userArgs = new SwimUserEventArgs(SwimUserEvent.AddParticipant, part);
+            OnUserEvent(userArgs);
+        }
+
+        public void AddEventPartObserver(EventPartDTO ev) {
+            SwimUserEventArgs userArgs = new SwimUserEventArgs(SwimUserEvent.AddEventPart, ev);
             OnUserEvent(userArgs);
         }
     }

@@ -12,18 +12,17 @@ using services;
 
 namespace client {
     public partial class SwimMainForm : Form {
-        private BindingSource bindingSourceEvent, bindingSourcePart;
         private readonly IList<Participant> participants;
+        private readonly IList<EventPartDTO> events;
         private SwimClientController ctrl;
         public SwimMainForm(SwimClientController sc) {
             this.ctrl = sc;
             InitializeComponent();
             InitializeDataGridColumn();
-            loadEvents();
-            ctrl.setFormForObserver(this);
-            //myDelegate = new UpdateObserverDelegate(UpdateObserver);
             participants = sc.findAllPart();
             dataGvParticipant.DataSource = participants;
+            events = sc.findAllEvents();
+            dataGvEvent.DataSource = events;
             ctrl.updateEvent += userUpdate;
         }
 
@@ -32,53 +31,35 @@ namespace client {
         /////////////////////////////////////////////////////////////////
         
 
-        private void userUpdate(object sender, SwimUserEventArgs e) {
-            if (e.UserEventType == SwimUserEvent.Update) {
-                //BeginInvoke(new UpdateObserverDelegate(this.UpdateObserver));
-                //dataGvParticipant.BeginInvoke(new UpdateDataGridViewCallback(this.UpdateObserver2), new Object[] { dataGvParticipant, e.Data });
+        private void userUpdate(object sender, SwimUserEventArgs suea) {
+            if (suea.UserEventType == SwimUserEvent.AddEventPart) {
+                foreach(EventPartDTO ev in events) {
+                    EventPartDTO x = (EventPartDTO)suea.Data;
+                    if (ev.Distance == x.Distance && ev.Style == x.Style) {
+                        ev.CodPart = ev.CodPart + 1;
+                        break;
+                    }
+                }
+                dataGvParticipant.BeginInvoke(new UpdateDGViewEventCallback(this.UpdateObserverEvent), new Object[] { dataGvEvent, events });
             }
-            if (e.UserEventType == SwimUserEvent.AddParticipant) {
-                //BeginInvoke(new UpdateObserverDelegate(this.UpdateObserver));
-                //dataGvParticipant.BeginInvoke(new UpdateDataGridViewCallback(this.UpdateObserver2), new Object[] { dataGvParticipant, e.Data });
-
-                participants.Add((Participant)e.Data);
-                dataGvParticipant.BeginInvoke(new UpdateDataGridViewCallback(this.UpdateObserver2), new Object[] { dataGvParticipant, participants });
-                
-
+            if (suea.UserEventType == SwimUserEvent.AddParticipant) {
+                participants.Add((Participant)suea.Data);
+                dataGvParticipant.BeginInvoke(new UpdateDGViewPartCallback(this.UpdateObserverPart), new Object[] { dataGvParticipant, participants });
             }
         }
 
-
-
-
-
-        public void UpdateObserver2(DataGridView dataGridView, IList<Participant> list) {
+        public void UpdateObserverPart(DataGridView dataGridView, IList<Participant> list) {
             dataGridView.DataSource = null;
             dataGridView.DataSource = list;
         }
-        public delegate void UpdateDataGridViewCallback(DataGridView dataGridView, IList<Participant> list);
+        public delegate void UpdateDGViewPartCallback(DataGridView dataGridView, IList<Participant> list);
+        /// ///////////////////
+        public void UpdateObserverEvent(DataGridView dataGridView, IList<EventPartDTO> list) {
+            dataGridView.DataSource = null;
+            dataGridView.DataSource = list;
+        }
+        public delegate void UpdateDGViewEventCallback(DataGridView dataGridView, IList<EventPartDTO> list);
 
-        //public void UpdateObserver2(DataGridView dataGridView, IList<Participant> list) {
-        //    dataGridView.DataSource = null;
-        //    dataGridView.DataSource = list;
-        //}
-        //public delegate void UpdateDataGridViewCallback(DataGridView dataGridView, IList<Participant> list);
-
-
-        //public void UpdateObserver2(DataGridView dataGridView, BindingSource newBindingSource) {
-        //    dataGridView.DataSource = null;
-        //    dataGridView.DataSource = newBindingSource;
-        //}
-        //public delegate void UpdateDataGridViewCallback(DataGridView dataGridView, BindingSource newBindingSource);
-
-        ///////////// 1111
-        //public delegate void UpdateObserverDelegate();
-        //public UpdateObserverDelegate myDelegate;
-        //public void UpdateObserver() {
-        //    loadParticipants(-1, "");
-        //    loadEvents();
-        //}
-        /////////////////////////////////////////////////////////////////
         private void ChatWindow_FormClosing(object sender, FormClosingEventArgs e) {
             Console.WriteLine("ChatWindow closing " + e.CloseReason);
             if (e.CloseReason == CloseReason.UserClosing) {
@@ -86,8 +67,8 @@ namespace client {
                 ctrl.updateEvent -= userUpdate;
                 Application.Exit();
             }
-
         }
+
         private void InitializeDataGridColumn() {
             //dataGvEvent.AutoSize = true;
             // Initialize the DataGridView.
@@ -127,19 +108,11 @@ namespace client {
             dataGvParticipant.Columns.Add(column33);
         }
 
-        private void loadEvents() {
-            dataGvEvent.DataSource = ctrl.findAllEvent(); ;
-        }
-
         private void loadParticipants(int distanta, String stil) {
             if (distanta == -1)
                 dataGvParticipant.DataSource = ctrl.findAllPart();
             else
                 dataGvParticipant.DataSource = ctrl.findAllPartForEvent(new Event(distanta, stil));
-        }
-
-        private void label1_Click(object sender, EventArgs e) {
-
         }
 
         private void dataGvEvent_CellContentClick(object sender, DataGridViewCellEventArgs e) {

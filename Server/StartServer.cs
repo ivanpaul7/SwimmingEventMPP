@@ -13,6 +13,11 @@ using networking;
 namespace Server {
     class StartServer {
         static void Main(string[] args) {
+            //IParticipantEventRepository eventPartRepo = new ParticipantEventMockRepository();  
+            //IParticipantRepository partRepo = new ParticipantMockRepository(); 
+            //IEventRepository eventRepo = new EventMockRepository();
+            //IOrganizerRepository orgRepo = new OrganizerMockRepository();
+
             IParticipantEventRepository eventPartRepo = new ParticipantEventDbRepository();
             IParticipantRepository partRepo = new ParticipantDbRepository();
             IEventRepository eventRepo = new EventDbRepository();
