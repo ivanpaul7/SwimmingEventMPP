@@ -71,7 +71,10 @@ namespace Server {
         }
 
         public void login(Organizer org, ISwimObserver client) {
+            orgRepo.checkUserPass(org);
             if (org != null) {
+                if(!orgRepo.checkUserPass(org))
+                    throw new SwimException("Username or password wrong!");
                 if (loggedClients.ContainsKey(org.Id))
                     throw new SwimException("User already logged in.");
                 loggedClients[org.Id] = client;
